@@ -34,17 +34,26 @@ class MainActivity : AppCompatActivity() {
         val allStations = HashMap<String?, Station>()
         val idMap = HashMap<String?, Station>()
 
+        // Database
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "stations"
         ).build()
         val stationDao = db.stationDao()
 
-        fetchInformation(url, gson, idMap, allStations)
-        fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText)
+        runBlocking {
+            launch {
+                testStation(stationDao)
+                val stationTest = stationDao.findByName("akersgata")
+                Log.d("DB TEST", stationTest.toString())
+            }
+        }
+
+        fetchInformation(url, gson, idMap, allStations, stationDao)
+        fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText, stationDao)
 
         searchButton.setOnClickListener {
-            fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText)
+            fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText, stationDao)
             val input = stationInput.text.toString().lowercase().trim()
             val station = allStations[input]
 
@@ -59,7 +68,6 @@ class MainActivity : AppCompatActivity() {
                         "\nParking available: " + station.num_docks_available
                 stationCard.text = info
 
-                stationDao.insertStation(station)
             } else {
                 val notFound = "Could not find: $input"
                 showToast(notFound)
@@ -72,6 +80,19 @@ class MainActivity : AppCompatActivity() {
         // TODO: Refactor, and create methods instead of everything in main
     }
 
+    private suspend fun testStation(stationDao: StationDao) {
+        val test = Station("1", "testStasjon", "blindern 1", 200.0, 100.0, 4, 2, 1)
+        stationDao.insertStation(test)
+        val testStation = stationDao.findById("1")
+        testStation.address?.let { Log.d("TEST TEST DB", it) }
+
+        val alleStasjoner = stationDao.findByName("oslo")
+
+        for (stasjon in alleStasjoner) {
+            stasjon.name?.let { Log.d("AlleStasjoner", it) }
+        }
+    }
+
     private fun showToast(text: String) {
         val duration = Toast.LENGTH_SHORT
         val toast = Toast.makeText(applicationContext, text, duration)
@@ -80,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
-                      lastUpdated: TextView) {
+                      lastUpdated: TextView, stationDao: StationDao) {
     runBlocking {
         launch {
             try {
@@ -90,11 +111,17 @@ fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
 
                 if (stationList != null) {
                     for (station in stationList) {
+
                         val curStation = idMap[station.station_id]
                         if (curStation != null) {
                             curStation.num_bikes_available = station.num_bikes_available
                             curStation.num_docks_available = station.num_docks_available
                         }
+                        stationDao.updateStation(
+                            station.num_bikes_available,
+                            station.num_docks_available,
+                            station.station_id
+                        )
                     }
                 }
                 val date = constructDate(response.last_updated?.toLong())
@@ -108,7 +135,8 @@ fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
 }
 
 fun fetchInformation(url: String, gson: Gson,
-                     idMap: HashMap<String?, Station>, allStations: HashMap<String?, Station>) {
+                     idMap: HashMap<String?, Station>, allStations: HashMap<String?, Station>,
+                     stationDao: StationDao) {
     runBlocking {
         launch {
             try {
@@ -120,6 +148,7 @@ fun fetchInformation(url: String, gson: Gson,
                         // use lowercase for easing the search-process later
                         allStations[station.name?.lowercase()] = station
                         idMap[station.station_id] = station
+                        stationDao.insertStation(station)
                     }
                 }
             } catch (exception: Exception) {

@@ -3,16 +3,20 @@ package com.example.bysykkelsjekker
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
 
 @Entity
 data class Station (
-    @PrimaryKey val station_id: String?,
+    @PrimaryKey val station_id: String,
     val name: String?,
     val address: String?,
-    val rental_uris: RentalUris?,
-    @ColumnInfo(name = "latitude") val lat: Number?,
-    @ColumnInfo(name = "longitude") val lon: Number?,
-    val capacity: Number?,
-    @ColumnInfo(name = "available_bikes") var num_bikes_available: Number?,
-    @ColumnInfo(name = "available_parking") var num_docks_available: Number?
+    @ColumnInfo(name = "latitude") val lat: Double?,
+    @ColumnInfo(name = "longitude") val lon: Double?,
+    val capacity: Int?,
+    @ColumnInfo(name = "available_bikes") var num_bikes_available: Int?,
+    @ColumnInfo(name = "available_parking") var num_docks_available: Int?
 )
+
+class Converter {
+
+}
