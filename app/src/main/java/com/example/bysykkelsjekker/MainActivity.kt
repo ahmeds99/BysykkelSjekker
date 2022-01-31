@@ -139,7 +139,3 @@ data class Data(val stations: List<Station>?)
 
 data class RentalUris(val android: String?, val ios: String?)
 
-data class Station(val station_id: String?, val name: String?, val address: String?,
-                   val rental_uris: RentalUris?, val lat: Number?, val lon: Number?,
-                   val capacity: Number?, var num_bikes_available: Number?,
-                   var num_docks_available: Number?)
