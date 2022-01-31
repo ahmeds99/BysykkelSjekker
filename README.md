@@ -4,6 +4,7 @@ Appen er langt fra ferdig, og er opprinnelig ment som et sideprosjekt som skal g
 
 Motivasjonen for akkurat Oslo Bysykkel er at det er et kult konsept som ønsker å få flere til å sykle, gjennom tilgjengelighet og brukervennlighet. 
 
+# Pågående arbeid
 Neste steget i utviklingen av applikasjonen er å bygge en database over stasjonsdataene, fremfor å lagre de i datastrukturer, slik som nå.
 
 Under følger et diagram laget i Dia som viser hvordan jeg tenker å bygge opp Stasjons-entiteten og selve databasen.
