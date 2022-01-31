@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.room.Room
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.gson.Gson
@@ -33,6 +34,12 @@ class MainActivity : AppCompatActivity() {
         val allStations = HashMap<String?, Station>()
         val idMap = HashMap<String?, Station>()
 
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "stations"
+        ).build()
+        val stationDao = db.stationDao()
+
         fetchInformation(url, gson, idMap, allStations)
         fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText)
 
@@ -51,6 +58,8 @@ class MainActivity : AppCompatActivity() {
                         station.capacity + "\nBikes available: " + station.num_bikes_available +
                         "\nParking available: " + station.num_docks_available
                 stationCard.text = info
+
+                stationDao.insertStation(station)
             } else {
                 val notFound = "Could not find: $input"
                 showToast(notFound)

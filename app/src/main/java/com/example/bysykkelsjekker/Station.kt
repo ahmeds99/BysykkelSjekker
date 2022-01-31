@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Station(
+data class Station (
     @PrimaryKey val station_id: String?,
     val name: String?,
     val address: String?,
@@ -15,4 +15,4 @@ data class Station(
     val capacity: Number?,
     @ColumnInfo(name = "available_bikes") var num_bikes_available: Number?,
     @ColumnInfo(name = "available_parking") var num_docks_available: Number?
-    )
+)
