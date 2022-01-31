@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val realTimeData = "https://gbfs.urbansharing.com/oslobysykkel.no/station_status.json"
         val gson = Gson()
 
+        // Maybe refactor to ViewBinding
         val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
         val stationInput = findViewById<EditText>(R.id.station_input)
         val searchButton = findViewById<Button>(R.id.search_station)
@@ -80,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         // TODO: Refactor, and create methods instead of everything in main
     }
 
+    // Only for testing
     private suspend fun testStation(stationDao: StationDao) {
         val test = Station("1", "testStasjon", "blindern 1", 200.0, 100.0, 4, 2, 1)
         stationDao.insertStation(test)
@@ -174,6 +176,3 @@ fun constructDate(unixTime: Long?): String? {
 data class Base(val last_updated: Number?, val ttl: Number?, val version: String?, val data: Data?)
 
 data class Data(val stations: List<Station>?)
-
-data class RentalUris(val android: String?, val ios: String?)
-
