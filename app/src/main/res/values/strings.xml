@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">BysykkelSjekker</string>
+    <string name="last_updated">Last updated:</string>
+    <string name="enter_name_of_station">Enter name of station</string>
+    <string name="search">Search</string>
+</resources>
