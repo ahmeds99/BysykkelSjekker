@@ -34,13 +34,11 @@ class MainActivity : AppCompatActivity() {
         //val stationInput = findViewById<EditText>(R.id.station_input)
         //val searchButton = findViewById<Button>(R.id.search_station)
         //val stationCard = findViewById<TextView>(R.id.current_station)
-        val allStations = HashMap<String?, Station>()
-        val idMap = HashMap<String?, Station>()
 
         // Database
         val stationDao = initiateDataBase()
-        fetchInformation(url, gson, idMap, allStations, stationDao)
-        fetchRealTimeData(realTimeData, gson, idMap, stationDao)
+        fetchInformation(url, gson, stationDao)
+        fetchRealTimeData(realTimeData, gson, stationDao)
 
         var myDataset = listOf<Station>()
         runBlocking {
@@ -88,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         // TODO: Maybe create DB? That lets me have search-functionality
         // TODO: Create personal buttons that goes to activity which display three most nearby stations
-        // TODO: Refactor, and create methods instead of everything in main
+        // TODO: Refactor (model for data classes), and create methods instead of everything in main
     }
 
     // Only for testing
@@ -120,8 +118,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
-                      stationDao: StationDao) {
+fun fetchRealTimeData(url: String, gson: Gson, stationDao: StationDao) {
     runBlocking {
         launch {
             try {
@@ -131,12 +128,6 @@ fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
 
                 if (stationList != null) {
                     for (station in stationList) {
-
-                        val curStation = idMap[station.station_id]
-                        if (curStation != null) {
-                            curStation.num_bikes_available = station.num_bikes_available
-                            curStation.num_docks_available = station.num_docks_available
-                        }
                         stationDao.updateStation(
                             station.num_bikes_available,
                             station.num_docks_available,
@@ -154,9 +145,7 @@ fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
     }
 }
 
-fun fetchInformation(url: String, gson: Gson,
-                     idMap: HashMap<String?, Station>, allStations: HashMap<String?, Station>,
-                     stationDao: StationDao) {
+fun fetchInformation(url: String, gson: Gson, stationDao: StationDao) {
     runBlocking {
         launch {
             try {
@@ -165,9 +154,6 @@ fun fetchInformation(url: String, gson: Gson,
 
                 if (stationList != null) {
                     for (station in stationList) {
-                        // use lowercase for easing the search-process later
-                        allStations[station.name?.lowercase()] = station
-                        idMap[station.station_id] = station
                         stationDao.insertStation(station)
                     }
                 }
