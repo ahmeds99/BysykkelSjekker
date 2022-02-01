@@ -8,7 +8,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.example.bysykkelsjekker.adapter.ItemAdapter
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.gson.Gson
@@ -28,20 +30,29 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
 
         // Maybe refactor to ViewBinding
-        val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
-        val stationInput = findViewById<EditText>(R.id.station_input)
-        val searchButton = findViewById<Button>(R.id.search_station)
-        val stationCard = findViewById<TextView>(R.id.current_station)
+        //val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
+        //val stationInput = findViewById<EditText>(R.id.station_input)
+        //val searchButton = findViewById<Button>(R.id.search_station)
+        //val stationCard = findViewById<TextView>(R.id.current_station)
         val allStations = HashMap<String?, Station>()
         val idMap = HashMap<String?, Station>()
 
         // Database
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "stations"
-        ).build()
-        val stationDao = db.stationDao()
+        val stationDao = initiateDataBase()
+        fetchInformation(url, gson, idMap, allStations, stationDao)
+        fetchRealTimeData(realTimeData, gson, idMap, stationDao)
 
+        var myDataset = listOf<Station>()
+        runBlocking {
+            launch {
+                myDataset = stationDao.getLexicographicOrder()
+            }
+        }
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.adapter = ItemAdapter(this, myDataset)
+        recyclerView.setHasFixedSize(true)
+
+        // Only for testing purposes
         runBlocking {
             launch {
                 testStation(stationDao)
@@ -50,9 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fetchInformation(url, gson, idMap, allStations, stationDao)
-        fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText, stationDao)
-
+        /*
         searchButton.setOnClickListener {
             fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText, stationDao)
             val input = stationInput.text.toString().lowercase().trim()
@@ -75,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                 stationCard.text = ""
             }
         }
+         */
 
         // TODO: Maybe create DB? That lets me have search-functionality
         // TODO: Create personal buttons that goes to activity which display three most nearby stations
@@ -100,10 +110,18 @@ class MainActivity : AppCompatActivity() {
         val toast = Toast.makeText(applicationContext, text, duration)
         toast.show()
     }
+
+    private fun initiateDataBase(): StationDao {
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "stations"
+        ).build()
+        return db.stationDao()
+    }
 }
 
 fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
-                      lastUpdated: TextView, stationDao: StationDao) {
+                      stationDao: StationDao) {
     runBlocking {
         launch {
             try {
@@ -126,9 +144,9 @@ fun fetchRealTimeData(url: String, gson: Gson, idMap: HashMap<String?, Station>,
                         )
                     }
                 }
-                val date = constructDate(response.last_updated?.toLong())
-                val update = "Last updated: $date"
-                lastUpdated.text = update
+                //val date = constructDate(response.last_updated?.toLong())
+                //val update = "Last updated: $date"
+                //lastUpdated.text = update
             } catch (exception: Exception) {
                 println("A network request exception was thrown: ${exception.message}")
             }
