@@ -3,4 +3,5 @@
     <string name="last_updated">Last updated:</string>
     <string name="enter_name_of_station">Enter name of station</string>
     <string name="search">Search</string>
+    <string name="write_name_of_station">Write name of station…</string>
 </resources>

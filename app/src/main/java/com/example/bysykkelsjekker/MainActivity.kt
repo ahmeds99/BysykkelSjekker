@@ -2,12 +2,16 @@ package com.example.bysykkelsjekker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.bysykkelsjekker.adapter.ItemAdapter
@@ -18,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
@@ -46,8 +51,10 @@ class MainActivity : AppCompatActivity() {
                 myDataset = stationDao.getLexicographicOrder()
             }
         }
+
+        val adapter = ItemAdapter(this, myDataset)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.adapter = ItemAdapter(this, myDataset)
+        recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
 
         // Only for testing purposes
@@ -59,30 +66,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        /*
-        searchButton.setOnClickListener {
-            fetchRealTimeData(realTimeData, gson, idMap, lastUpdatedText, stationDao)
-            val input = stationInput.text.toString().lowercase().trim()
-            val station = allStations[input]
+        val stationInput = findViewById<SearchView>(R.id.station_search)
 
-            try {
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-            } catch (exception: NullPointerException) {}
-
-            if (station != null) {
-                val info = station.name + "\nAddress: " + station.address + "\nCapacity: " +
-                        station.capacity + "\nBikes available: " + station.num_bikes_available +
-                        "\nParking available: " + station.num_docks_available
-                stationCard.text = info
-
-            } else {
-                val notFound = "Could not find: $input"
-                showToast(notFound)
-                stationCard.text = ""
+        stationInput.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
             }
-        }
-         */
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+        })
 
         // TODO: Maybe create DB? That lets me have search-functionality
         // TODO: Create personal buttons that goes to activity which display three most nearby stations
