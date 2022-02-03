@@ -11,7 +11,7 @@ Under følger et diagram laget i Dia som viser hvordan jeg tenker å bygge opp S
 
 ![Databasen](https://github.com/ahmeds99/BysykkelSjekker/blob/master/app/db_documentation/database_img.PNG)
 
-# Userstories
+# User Stories
 "Som bruker ønsker jeg å kunne filtrere stasjoner basert på input"
 
 "Som bruker ønsker jeg å se tydelig dersom en stasjon har ledige sykler"
