@@ -11,5 +11,10 @@ Under følger et diagram laget i Dia som viser hvordan jeg tenker å bygge opp S
 
 ![Databasen](https://github.com/ahmeds99/BysykkelSjekker/blob/master/app/db_documentation/database_img.PNG)
 
+# User Stories
+"Som bruker ønsker jeg å kunne filtrere stasjoner basert på input"
+
+"Som bruker ønsker jeg å se tydelig dersom en stasjon har ledige sykler"
+
 # Pågående arbeid
 Implementere ferdig RecyclerView, og lage cards som både ser bra ut og viser informasjonen på en gitt stasjon. I tillegg må det legges til et søkefelt som filtrer ut stasjoner basert på input. Database-spørringen for dette er klar (findByName() i StationDao), men må koordineres med layouten og XML-filen. 
