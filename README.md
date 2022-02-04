@@ -11,6 +11,8 @@ Under følger et diagram laget i Dia som viser hvordan jeg tenker å bygge opp S
 
 ![Databasen](https://github.com/ahmeds99/BysykkelSjekker/blob/master/app/db_documentation/database_img.PNG)
 
+Mulige utvidelser: User-entitet som lar brukere logge inn og lagre sine favorittstasjoner.
+
 # User Stories
 "Som bruker ønsker jeg å kunne filtrere stasjoner basert på input"
 
