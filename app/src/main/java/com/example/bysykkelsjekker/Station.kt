@@ -3,6 +3,7 @@ package com.example.bysykkelsjekker
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.annotation.DrawableRes
 
 @Entity
 data class Station (
@@ -13,5 +14,7 @@ data class Station (
     @ColumnInfo(name = "longitude") val lon: Double?,
     val capacity: Int?,
     @ColumnInfo(name = "available_bikes") var num_bikes_available: Int?,
-    @ColumnInfo(name = "available_parking") var num_docks_available: Int?
+    @ColumnInfo(name = "available_parking") var num_docks_available: Int?,
+    @DrawableRes var bicycleLogo: Int,
+    @DrawableRes var parkingLogo: Int
 )

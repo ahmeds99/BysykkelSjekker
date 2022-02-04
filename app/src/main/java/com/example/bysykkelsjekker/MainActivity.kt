@@ -36,9 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         // Maybe refactor to ViewBinding
         //val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
-        //val stationInput = findViewById<EditText>(R.id.station_input)
-        //val searchButton = findViewById<Button>(R.id.search_station)
-        //val stationCard = findViewById<TextView>(R.id.current_station)
 
         // Database
         val stationDao = initiateDataBase()
@@ -60,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         // Only for testing purposes
         runBlocking {
             launch {
-                testStation(stationDao)
+                //testStation(stationDao)
                 val stationTest = stationDao.findByName("akersgata")
                 Log.d("DB TEST", stationTest.toString())
             }
@@ -79,12 +76,12 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // TODO: Maybe create DB? That lets me have search-functionality
         // TODO: Create personal buttons that goes to activity which display three most nearby stations
         // TODO: Refactor (model for data classes), and create methods instead of everything in main
     }
 
     // Only for testing
+    /*
     private suspend fun testStation(stationDao: StationDao) {
         val test = Station("1", "testStasjon", "blindern 1", 200.0, 100.0, 4, 2, 1)
         stationDao.insertStation(test)
@@ -97,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             stasjon.name?.let { Log.d("AlleStasjoner", it) }
         }
     }
+     */
 
     private fun showToast(text: String) {
         val duration = Toast.LENGTH_SHORT
@@ -108,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         val db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "stations"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
         return db.stationDao()
     }
 }
@@ -149,6 +147,8 @@ fun fetchInformation(url: String, gson: Gson, stationDao: StationDao) {
 
                 if (stationList != null) {
                     for (station in stationList) {
+                        station.bicycleLogo = R.drawable.bycycle
+                        station.parkingLogo = R.drawable.parking
                         stationDao.insertStation(station)
                     }
                 }

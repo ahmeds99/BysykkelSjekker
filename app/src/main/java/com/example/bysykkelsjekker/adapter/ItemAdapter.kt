@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bysykkelsjekker.R
@@ -24,6 +25,8 @@ class ItemAdapter(
         val addressTextView: TextView = view.findViewById(R.id.station_address)
         val availableBikesTextView: TextView = view.findViewById(R.id.available_bikes)
         val availableParkingTextView: TextView = view.findViewById(R.id.available_parking)
+        val bicycleView: ImageView = view.findViewById(R.id.bicycle)
+        val parkingView: ImageView = view.findViewById(R.id.parking)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -46,6 +49,9 @@ class ItemAdapter(
 
         val availableParking = "Available parking: " + item.num_docks_available
         holder.availableParkingTextView.text = availableParking
+
+        holder.bicycleView.setImageResource(item.bicycleLogo)
+        holder.parkingView.setImageResource(item.parkingLogo)
     }
 
     override fun getItemCount() = filteredStations.size
