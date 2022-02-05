@@ -22,4 +22,5 @@ Mulige utvidelser: User-entitet som lar brukere logge inn og lagre sine favoritt
 Implementere ferdig RecyclerView, og lage cards som både ser bra ut og viser informasjonen på en gitt stasjon. I tillegg må det legges til et søkefelt som filtrer ut stasjoner basert på input. Database-spørringen for dette er klar (findByName() i StationDao), men må koordineres med layouten og XML-filen. 
 
 # Fremtidige utvidelser
-Opprette egen bruker til applikasjonen, slik at en bruker kan klikke inn på de ulike stasjonene, og legge til sine favorittstasjoner, som vises på "Min side". En ytterligere utvidelse av dette kan være å la brukeren gi ulike "tags" til stasjonene, eksempelvis "trening", "hjem", eller "studier", og sortere stasjonsvisningene basert på dette. Vi får se!
+Opprette egen bruker til applikasjonen, slik at en bruker kan klikke inn på de ulike stasjonene, og legge til sine favorittstasjoner, som vises på "Min side". Databasen må nok dermed oppdaters, og legge til en User-entitet som har en relasjon til Station-entiteten. 
+En ytterligere utvidelse av dette kan være å la brukeren gi ulike "tags" til stasjonene, eksempelvis "trening", "hjem", eller "studier", og sortere stasjonsvisningene basert på dette. Vi får se!
