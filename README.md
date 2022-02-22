@@ -24,7 +24,8 @@ Bonus-fakta: programmeringsmønsteret MVC - Model View Controller er skapt av Tr
 "Som bruker ønsker jeg å se tydelig dersom en stasjon har ledige sykler"
 
 # Pågående arbeid
-Implementere ferdig RecyclerView, og lage cards som både ser bra ut og viser informasjonen på en gitt stasjon. I tillegg må det legges til et søkefelt som filtrer ut stasjoner basert på input. Database-spørringen for dette er klar (findByName() i StationDao), men må koordineres med layouten og XML-filen. 
+Refaktorere med hensyn til MVVM-designmønsteret. I tillegg gjøre kortene 'klikkbare' og la brukeren få opp en pin på et kart over lokasjonen til stasjonen. 
+Potensielt utvide med muligheter til å filtrere søk på adresse også (akkurat nå er det kun navnet på stasjonen som utgjør filtreringen).
 
 # Fremtidige utvidelser
 Opprette egen bruker til applikasjonen, slik at en bruker kan klikke inn på de ulike stasjonene, og legge til sine favorittstasjoner, som vises på "Min side". Databasen må nok dermed oppdaters, og legge til en User-entitet som har en relasjon til Station-entiteten. 
