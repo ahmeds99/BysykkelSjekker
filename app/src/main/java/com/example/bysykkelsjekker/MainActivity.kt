@@ -2,66 +2,35 @@ package com.example.bysykkelsjekker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.bysykkelsjekker.adapter.ItemAdapter
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.coroutines.awaitString
-import com.google.gson.Gson
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val url = "https://gbfs.urbansharing.com/oslobysykkel.no/station_information.json"
-        val realTimeData = "https://gbfs.urbansharing.com/oslobysykkel.no/station_status.json"
-        val gson = Gson()
+        viewModel.loadStations()
+        viewModel.updateStations()
 
         // Maybe refactor to ViewBinding
         //val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
 
-        // Database
-        val stationDao = initiateDataBase()
-        fetchInformation(url, gson, stationDao)
-        fetchRealTimeData(realTimeData, gson, stationDao)
-
-        var myDataset = listOf<Station>()
-        runBlocking {
-            launch {
-                myDataset = stationDao.getLexicographicOrder()
-            }
-        }
+        val myDataset = viewModel.getLexicographicOrder()
 
         val adapter = ItemAdapter(this, myDataset)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
-
-        // Only for testing purposes
-        runBlocking {
-            launch {
-                //testStation(stationDao)
-                val stationTest = stationDao.findByName("akersgata")
-                Log.d("DB TEST", stationTest.toString())
-            }
-        }
 
         val stationInput = findViewById<SearchView>(R.id.station_search)
 
@@ -100,62 +69,6 @@ class MainActivity : AppCompatActivity() {
         val duration = Toast.LENGTH_SHORT
         val toast = Toast.makeText(applicationContext, text, duration)
         toast.show()
-    }
-
-    private fun initiateDataBase(): StationDao {
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "stations"
-        ).fallbackToDestructiveMigration().build()
-        return db.stationDao()
-    }
-}
-
-fun fetchRealTimeData(url: String, gson: Gson, stationDao: StationDao) {
-    runBlocking {
-        launch {
-            try {
-                val response = gson.fromJson(Fuel.get(url).awaitString(), Base::class.java)
-                val stationList = response.data?.stations
-                Log.d("STATIONS REALTIME", stationList.toString())
-
-                if (stationList != null) {
-                    for (station in stationList) {
-                        stationDao.updateStation(
-                            station.num_bikes_available,
-                            station.num_docks_available,
-                            station.station_id
-                        )
-                    }
-                }
-                //val date = constructDate(response.last_updated?.toLong())
-                //val update = "Last updated: $date"
-                //lastUpdated.text = update
-            } catch (exception: Exception) {
-                println("A network request exception was thrown: ${exception.message}")
-            }
-        }
-    }
-}
-
-fun fetchInformation(url: String, gson: Gson, stationDao: StationDao) {
-    runBlocking {
-        launch {
-            try {
-                val response = gson.fromJson(Fuel.get(url).awaitString(), Base::class.java)
-                val stationList = response.data?.stations
-
-                if (stationList != null) {
-                    for (station in stationList) {
-                        station.bicycleLogo = R.drawable.bycycle
-                        station.parkingLogo = R.drawable.parking
-                        stationDao.insertStation(station)
-                    }
-                }
-            } catch (exception: Exception) {
-                println("A network request exception was thrown: ${exception.message}")
-            }
-        }
     }
 }
 
