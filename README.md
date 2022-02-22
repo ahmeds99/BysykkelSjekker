@@ -13,6 +13,9 @@ Under følger et diagram laget i Dia som viser hvordan jeg tenker å bygge opp S
 
 Mulige utvidelser: User-entitet som lar brukere logge inn og lagre sine favorittstasjoner.
 
+# Design pattern
+Et av temaenne i kurset IN2000 er bruken av design patterns (programmeringsmønstre). Til å begynne med var det *mye* kode i MainActivity.kt, allerede etter en uke merket jeg hvordan litt lat koding kunne komme tilbake og gjøre ting vanskelig. For å håndtere dette og unngå "teknisk gjeld", så prøvde jeg å refaktorere koden til å ta i bruk programmeringsmønsteret Model View ViewModel, som er et populært pattern for Android, der man skiller mellom presetnasjonslaget og datalaget. 
+
 # User Stories
 "Som bruker ønsker jeg å kunne filtrere stasjoner basert på input"
 
