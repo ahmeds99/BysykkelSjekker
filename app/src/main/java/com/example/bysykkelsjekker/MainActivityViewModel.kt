@@ -23,12 +23,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun getLexicographicOrder(): List<Station> {
-        var dataset = listOf<Station>()
-        viewModelScope.launch(Dispatchers.IO) {
-            dataset = stationDao.getLexicographicOrder()
-        }
-        return dataset
+    suspend fun getLexicographicOrder(): List<Station> {
+        return stationDao.getLexicographicOrder()
     }
 
     private fun initiateDataBase(): StationDao {

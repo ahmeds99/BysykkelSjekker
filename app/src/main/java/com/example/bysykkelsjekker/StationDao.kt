@@ -1,6 +1,5 @@
 package com.example.bysykkelsjekker
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -17,7 +16,7 @@ interface StationDao {
     suspend fun updateStation(currentBikes: Int?, currentParking: Int?, station_id: String?)
 
     @Query("SELECT * FROM station")
-    fun getAll(): List<Station>
+    suspend fun getAll(): List<Station>
 
     @Query("SELECT * FROM station ORDER BY name")
     suspend fun getLexicographicOrder(): List<Station>

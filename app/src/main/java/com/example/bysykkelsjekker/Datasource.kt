@@ -1,6 +1,5 @@
 package com.example.bysykkelsjekker
 
-import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.gson.Gson

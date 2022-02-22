@@ -61,9 +61,11 @@ class ItemAdapter(
         return object : Filter() {
             override fun performFiltering(p0: CharSequence?): FilterResults {
                 val search = p0.toString()
+
                 filteredStations = if (search.isEmpty())
                     dataset
                 else {
+                    // Can this code be sped up? Not noticing signs of slow response-time but still
                     val resultList = ArrayList<Station>()
                     for (station in dataset) {
                         if (station.name?.lowercase()?.contains(search.lowercase()) == true) {
@@ -79,7 +81,7 @@ class ItemAdapter(
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
-                filteredStations = p1?.values as ArrayList<Station>
+                filteredStations = if (p1 != null ) p1.values as ArrayList<Station> else emptyList()
                 notifyDataSetChanged()
             }
         }

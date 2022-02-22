@@ -3,11 +3,17 @@ package com.example.bysykkelsjekker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bysykkelsjekker.adapter.ItemAdapter
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,9 +29,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.updateStations()
 
         // Maybe refactor to ViewBinding
-        //val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
+        // val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
 
-        val myDataset = viewModel.getLexicographicOrder()
+        var myDataset = listOf<Station>()
+        runBlocking {
+            launch {
+                myDataset = viewModel.getLexicographicOrder()
+            }
+        }
 
         val adapter = ItemAdapter(this, myDataset)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
