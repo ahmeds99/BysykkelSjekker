@@ -7,6 +7,11 @@ plugins {
 android {
     compileSdk 32
 
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
     defaultConfig {
         applicationId "com.example.bysykkelsjekker"
         minSdk 23

@@ -3,27 +3,24 @@ package com.example.bysykkelsjekker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bysykkelsjekker.adapter.ItemAdapter
+import com.example.bysykkelsjekker.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModel.loadStations()
         viewModel.updateStations()
@@ -39,11 +36,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         val adapter = ItemAdapter(this, myDataset)
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.setHasFixedSize(true)
 
-        val stationInput = findViewById<SearchView>(R.id.station_search)
+        val stationInput = binding.stationSearch
 
         stationInput.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

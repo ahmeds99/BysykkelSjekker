@@ -2,15 +2,14 @@ package com.example.bysykkelsjekker.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bysykkelsjekker.R
 import com.example.bysykkelsjekker.Station
+import com.example.bysykkelsjekker.databinding.StationItemBinding
 
 class ItemAdapter(
     private val context: Context,
@@ -19,22 +18,24 @@ class ItemAdapter(
 
     private var filteredStations: List<Station> = dataset
 
-    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nameTextView: TextView = view.findViewById(R.id.station_name)
-        val idTextView: TextView = view.findViewById(R.id.station_id)
-        val addressTextView: TextView = view.findViewById(R.id.station_address)
-        val availableBikesTextView: TextView = view.findViewById(R.id.available_bikes)
-        val availableParkingTextView: TextView = view.findViewById(R.id.available_parking)
-        val bicycleView: ImageView = view.findViewById(R.id.bicycle)
-        val parkingView: ImageView = view.findViewById(R.id.parking)
+    class ItemViewHolder(binding: StationItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val nameTextView: TextView = binding.stationName
+        val idTextView: TextView = binding.stationId
+        val addressTextView: TextView = binding.stationAddress
+        val availableBikesTextView: TextView = binding.availableBikes
+        val availableParkingTextView: TextView = binding.availableParking
+        val bicycleView: ImageView = binding.bicycle
+        val parkingView: ImageView = binding.parking
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        // New view
-        val adapterLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.station_item, parent, false)
-
-        return ItemViewHolder(adapterLayout)
+        return ItemViewHolder(
+            StationItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
