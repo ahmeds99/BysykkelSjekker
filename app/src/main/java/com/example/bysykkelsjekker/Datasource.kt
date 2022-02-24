@@ -1,6 +1,5 @@
 package com.example.bysykkelsjekker
 
-import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitString
 import com.google.gson.Gson
@@ -45,7 +44,8 @@ class Datasource(private val stationDao: StationDao) {
                     )
                 }
             }
-            val date = constructDate(response.last_updated?.toLong())
+            //val date = constructDate(response.last_updated?.toLong())
+            val date = constructDateNew(response.last_updated?.toLong())
             return "Last updated: $date"
         } catch (exception: Exception) {
             println("A network request exception was thrown: ${exception.message}")
@@ -54,12 +54,11 @@ class Datasource(private val stationDao: StationDao) {
     }
 
     // Change posix/Unix timestamp to readable date-string
-    private fun constructDate(unixTime: Long?): String? {
+    private fun constructDateNew(unixTime: Long?): String? {
         if (unixTime != null) {
             val date = Date(unixTime * 1000)
-            val df = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(date)
-            val minutes = if (date.minutes < 10) "0" + date.minutes else "" + date.minutes
-            return "$df " + date.hours + ":" + minutes
+            val df = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMAN).format(date)
+            return df.toString()
         }
         return null
     }

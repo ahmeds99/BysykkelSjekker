@@ -2,7 +2,6 @@ package com.example.bysykkelsjekker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import com.example.bysykkelsjekker.adapter.ItemAdapter
