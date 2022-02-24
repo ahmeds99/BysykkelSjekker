@@ -16,13 +16,16 @@ Mulige utvidelser: User-entitet som lar brukere logge inn og lagre sine favoritt
 # Design pattern
 Et av temaenne i kurset IN2000 er bruken av design patterns (programmeringsmønstre). Til å begynne med var det *mye* kode i MainActivity.kt, allerede etter en uke merket jeg hvordan litt lat koding kunne komme tilbake og gjøre ting vanskelig. For å håndtere dette og unngå "teknisk gjeld", så prøvde jeg å refaktorere koden til å ta i bruk programmeringsmønsteret Model View ViewModel, som er et populært pattern for Android, der man skiller mellom presentasjonslaget og datalaget. 
 
+Bonus-fakta: programmeringsmønsteret MVC - Model View Controller er skapt av Trygve Reenskaug, professor (emeritus) ved IFI :)  
+
 # User Stories
 "Som bruker ønsker jeg å kunne filtrere stasjoner basert på input"
 
 "Som bruker ønsker jeg å se tydelig dersom en stasjon har ledige sykler"
 
 # Pågående arbeid
-Implementere ferdig RecyclerView, og lage cards som både ser bra ut og viser informasjonen på en gitt stasjon. I tillegg må det legges til et søkefelt som filtrer ut stasjoner basert på input. Database-spørringen for dette er klar (findByName() i StationDao), men må koordineres med layouten og XML-filen. 
+Refaktorere med hensyn til MVVM-designmønsteret. I tillegg gjøre kortene 'klikkbare' og la brukeren få opp en pin på et kart over lokasjonen til stasjonen. 
+Potensielt utvide med muligheter til å filtrere søk på adresse også (akkurat nå er det kun navnet på stasjonen som utgjør filtreringen).
 
 # Fremtidige utvidelser
 Opprette egen bruker til applikasjonen, slik at en bruker kan klikke inn på de ulike stasjonene, og legge til sine favorittstasjoner, som vises på "Min side". Databasen må nok dermed oppdaters, og legge til en User-entitet som har en relasjon til Station-entiteten. 
