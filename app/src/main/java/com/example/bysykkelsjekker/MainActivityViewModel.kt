@@ -10,6 +10,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     // database
     private val stationDao = initiateDataBase()
     private val datasource = Datasource(stationDao)
+    private var lastUpdated = MutableLiveData<String>()
 
     fun loadStations() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -19,8 +20,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun updateStations() {
         viewModelScope.launch(Dispatchers.IO) {
-            datasource.fetchRealTimeData()
+            lastUpdated.postValue(datasource.fetchRealTimeData())
         }
+    }
+
+    fun getLastUpdated(): LiveData<String> {
+        return lastUpdated
     }
 
     suspend fun getLexicographicOrder(): List<Station> {

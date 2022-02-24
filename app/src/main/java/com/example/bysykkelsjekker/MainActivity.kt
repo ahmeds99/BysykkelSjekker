@@ -3,15 +3,12 @@ package com.example.bysykkelsjekker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import com.example.bysykkelsjekker.adapter.ItemAdapter
 import com.example.bysykkelsjekker.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -25,8 +22,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.loadStations()
         viewModel.updateStations()
 
-        // Maybe refactor to ViewBinding
-        // val lastUpdatedText = findViewById<TextView>(R.id.last_updated)
+        val lastUpdatedText = binding.lastUpdated
+        viewModel.getLastUpdated().observe(this) {
+            lastUpdatedText.text = it
+        }
 
         var myDataset = listOf<Station>()
         runBlocking {
@@ -72,23 +71,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
      */
-
-    private fun showToast(text: String) {
-        val duration = Toast.LENGTH_SHORT
-        val toast = Toast.makeText(applicationContext, text, duration)
-        toast.show()
-    }
-}
-
-// Change posix/Unix timestamp to readable date-string
-fun constructDate(unixTime: Long?): String? {
-    if (unixTime != null) {
-        val date = Date(unixTime * 1000)
-        val df = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(date)
-        val minutes = if (date.minutes < 10) "0" + date.minutes else "" + date.minutes
-        return "$df " + date.hours + ":" + minutes
-    }
-    return null
 }
 
 // result generated from /json
