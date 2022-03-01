@@ -14,8 +14,8 @@ class Datasource(private val stationDao: StationDao) {
 
     suspend fun fetchInformation() {
         try {
-            val response = gson.fromJson(Fuel.get(stationURL).awaitString(), Base::class.java)
-            val stationList = response.data?.stations
+            val response = gson.fromJson(Fuel.get(stationURL).awaitString(), BaseDto::class.java)
+            val stationList = response.dataDto?.stations
 
             if (stationList != null) {
                 for (station in stationList) {
@@ -32,8 +32,8 @@ class Datasource(private val stationDao: StationDao) {
 
     suspend fun fetchRealTimeData(): String {
         try {
-            val response = gson.fromJson(Fuel.get(realTimeDataURL).awaitString(), Base::class.java)
-            val stationList = response.data?.stations
+            val response = gson.fromJson(Fuel.get(realTimeDataURL).awaitString(), BaseDto::class.java)
+            val stationList = response.dataDto?.stations
 
             if (stationList != null) {
                 for (station in stationList) {

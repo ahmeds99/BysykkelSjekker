@@ -52,28 +52,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         // TODO: Create personal buttons that goes to activity which display three most nearby stations
-        // TODO: Refactor (model for data classes), and create methods instead of everything in main
     }
 
-    // Only for testing
-    /*
-    private suspend fun testStation(stationDao: StationDao) {
-        val test = Station("1", "testStasjon", "blindern 1", 200.0, 100.0, 4, 2, 1)
-        stationDao.insertStation(test)
-        val testStation = stationDao.findById("1")
-        testStation.address?.let { Log.d("TEST TEST DB", it) }
-
-        val alleStasjoner = stationDao.findByName("oslo")
-
-        for (stasjon in alleStasjoner) {
-            stasjon.name?.let { Log.d("AlleStasjoner", it) }
-        }
-    }
-     */
 }
 
 // result generated from /json
 
-data class Base(val last_updated: Number?, val ttl: Number?, val version: String?, val data: Data?)
+data class BaseDto(val last_updated: Number?, val ttl: Number?, val version: String?, val dataDto: DataDto?)
 
-data class Data(val stations: List<Station>?)
+data class DataDto(val stations: List<Station>?)
