@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
 
         // TODO: Create personal buttons that goes to activity which display three most nearby stations
     }
-
 }
 
 // result generated from /json

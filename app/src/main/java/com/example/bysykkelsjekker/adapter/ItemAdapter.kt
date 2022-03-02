@@ -1,7 +1,11 @@
 package com.example.bysykkelsjekker.adapter
 
 import android.content.Context
+import android.transition.AutoTransition
+import android.transition.TransitionManager
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -26,6 +30,10 @@ class ItemAdapter(
         val availableParkingTextView: TextView = binding.availableParking
         val bicycleView: ImageView = binding.bicycle
         val parkingView: ImageView = binding.parking
+
+        // Extendable card
+        val mapButton = binding.mapButton
+        val layout = binding.cardLayout
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -53,6 +61,18 @@ class ItemAdapter(
 
         holder.bicycleView.setImageResource(item.bicycleLogo)
         holder.parkingView.setImageResource(item.parkingLogo)
+
+
+        // TODO: CLEAN THIS MESS UP
+        val layout = holder.layout
+        val mapButton = holder.mapButton
+        holder.itemView.setOnClickListener{
+            val v = if (mapButton.visibility == View.GONE) View.VISIBLE else View.GONE
+
+            TransitionManager.beginDelayedTransition(layout, AutoTransition())
+            mapButton.visibility = v
+            Log.d("EXPAND TEXT", mapButton.text.toString())
+        }
     }
 
     override fun getItemCount() = filteredStations.size
