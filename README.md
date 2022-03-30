@@ -4,7 +4,7 @@ Appen er langt fra ferdig, og er opprinnelig ment som et sideprosjekt som skal g
 
 Motivasjonen for akkurat Oslo Bysykkel er at det er et kult konsept som ønsker å få flere til å sykle, gjennom tilgjengelighet og brukervennlighet. 
 
-# Database
+## Database
 Applikasjonen benytter et relativt simpelt databaseskjema, der eneste entiteten er stasjonsobjektene. Her er id-en til stasjonene primærnøkkel. Databasen som benyttes er Room, som tilbys av Android Studio. En del knoting her og der for å sette opp databasen, men DAO-interfacet gir muligheter til CRUD-operasjoner på en fin og brukervennlig måte. 
 
 Under følger et diagram laget i Dia som viser hvordan jeg tenker å bygge opp Stasjons-entiteten og selve databasen.
@@ -13,20 +13,20 @@ Under følger et diagram laget i Dia som viser hvordan jeg tenker å bygge opp S
 
 Mulige utvidelser: User-entitet som lar brukere logge inn og lagre sine favorittstasjoner.
 
-# Design pattern
+## Design pattern
 Et av temaenne i kurset IN2000 er bruken av design patterns (programmeringsmønstre). Til å begynne med var det *mye* kode i MainActivity.kt, allerede etter en uke merket jeg hvordan litt lat koding kunne komme tilbake og gjøre ting vanskelig. For å håndtere dette og unngå "teknisk gjeld", så prøvde jeg å refaktorere koden til å ta i bruk programmeringsmønsteret Model View ViewModel, som er et populært pattern for Android, der man skiller mellom presentasjonslaget og datalaget. 
 
 Bonus-fakta: programmeringsmønsteret MVC - Model View Controller er skapt av Trygve Reenskaug, professor (emeritus) ved IFI :)  
 
-# User Stories
+## User Stories
 "Som bruker ønsker jeg å kunne filtrere stasjoner basert på input"
 
 "Som bruker ønsker jeg å se tydelig dersom en stasjon har ledige sykler"
 
-# Pågående arbeid
+## Pågående arbeid
 Refaktorere med hensyn til MVVM-designmønsteret. I tillegg gjøre kortene 'klikkbare' og la brukeren få opp en pin på et kart over lokasjonen til stasjonen. 
 Potensielt utvide med muligheter til å filtrere søk på adresse også (akkurat nå er det kun navnet på stasjonen som utgjør filtreringen).
 
-# Fremtidige utvidelser
+## Fremtidige utvidelser
 Opprette egen bruker til applikasjonen, slik at en bruker kan klikke inn på de ulike stasjonene, og legge til sine favorittstasjoner, som vises på "Min side". Databasen må nok dermed oppdaters, og legge til en User-entitet som har en relasjon til Station-entiteten. 
 En ytterligere utvidelse av dette kan være å la brukeren gi ulike "tags" til stasjonene, eksempelvis "trening", "hjem", eller "studier", og sortere stasjonsvisningene basert på dette. Vi får se!
